@@ -4,9 +4,9 @@ import random
 
 pygame.init()
 
-screen_width = 800
+screen_width = 600
 screen_height = 600
-block_size = 50
+block_size = 40
 
 font = pygame.font.SysFont("Bauharus 93", 40)
 
@@ -22,7 +22,15 @@ class Snake:
         self.head = pygame.Rect(self.x, self.y, block_size, block_size) 
         self.body = [pygame.Rect(self.x - block_size, self.y, block_size, block_size)]
         self.dead = False
+        self.stop = False
 
+    def update(self):
+        self.body.append(self.head)
+        for i in range(len(self.body) - 1):
+            self.body[i].x, self.body[i].y = self.body[i+1].x, self.body[i+1].y
+        self.head.x += self.xdir * block_size
+        self.head.y += self.ydir * block_size        
+        self.body.remove(self.head)
 
 def draw_grid():
     for x in range(0, screen_width, block_size):
@@ -37,6 +45,31 @@ draw_grid()
 
 serpentine = True
 while serpentine:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_DOWN:
+                snake.ydir = 1
+                snake.xdir = 0
+            elif event.key == pygame.K_UP:
+                snake.ydir = -1
+                snake.xdir = 0 
+            elif event.key == pygame.K_RIGHT:
+                snake.xdir = 1
+                snake.ydir = 0
+            elif event.key == pygame.K_LEFT:
+                snake.xdir = -1
+                snake.ydir = 0        
+            elif event.key == pygame.K_1:
+                snake.stop = True           
+
+    snake.update()
+
+    screen.fill("black")
+    draw_grid()
+    
 
     #draw snake's head.
     pygame.draw.rect(screen, "red", snake.head)
@@ -45,19 +78,15 @@ while serpentine:
     for square in snake.body:
         pygame.draw.rect(screen, "red", square)
     
-    
-    
-    
-    
-    
-    
-    
-    
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            sys.exit
-
-
     pygame.display.update()
     clock.tick(10)        
+    
+    
+    
+    
+    
+    
+    
+    
+
+
