@@ -8,7 +8,7 @@ screen_width = 600
 screen_height = 600
 block_size = 40
 
-font = pygame.font.SysFont("Bauharus 93", 40)
+font = pygame.font.SysFont("Arial 93", 40)
 
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("The Real Snake")
@@ -62,6 +62,9 @@ def draw_grid():
             rect = pygame.Rect(x, y, block_size, block_size)
             pygame.draw.rect(screen, "grey", rect, 1)
 
+score = font.render("0", True, "white")
+score_rect = score.get_rect(center=(screen_width/2, screen_height/20))
+
 snake = Snake()
 apple = Apple()
 draw_grid()
@@ -95,6 +98,9 @@ while serpentine:
     draw_grid()
     
     apple.update()
+
+    score =font.render(f"{len(snake.body) + 1}", True, "white")
+    screen.blit(score, score_rect)
 
     #draw snake's head.
     pygame.draw.rect(screen, "green", snake.head)
