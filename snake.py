@@ -32,6 +32,15 @@ class Snake:
         self.head.y += self.ydir * block_size        
         self.body.remove(self.head)
 
+class Apple:
+    def __init__(self):
+        self.x = int(random.randint(0, screen_width)/ block_size) * block_size
+        self.y = int(random.randint(0, screen_height)/ block_size) * block_size
+        self.rect = pygame.Rect(self.x, self.y, block_size, block_size)
+    def update(self):
+        pygame.draw.rect(screen, "red", self.rect)
+
+
 def draw_grid():
     for x in range(0, screen_width, block_size):
         for y in range(0, screen_height, block_size):
@@ -39,7 +48,7 @@ def draw_grid():
             pygame.draw.rect(screen, "green", rect, 1)
 
 snake = Snake()
-
+apple = Apple()
 draw_grid()
 
 
@@ -67,19 +76,20 @@ while serpentine:
 
     snake.update()
 
-    screen.fill("black")
+    screen.fill("blue")
     draw_grid()
     
+    apple.update()
 
     #draw snake's head.
-    pygame.draw.rect(screen, "red", snake.head)
+    pygame.draw.rect(screen, "grey", snake.head)
 
     #draw snake's body.
     for square in snake.body:
-        pygame.draw.rect(screen, "red", square)
+        pygame.draw.rect(screen, "black", square)
     
     pygame.display.update()
-    clock.tick(10)        
+    clock.tick(5)        
     
     
     
