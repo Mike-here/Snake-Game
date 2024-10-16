@@ -22,9 +22,15 @@ class Snake:
         self.head = pygame.Rect(self.x, self.y, block_size, block_size) 
         self.body = [pygame.Rect(self.x - block_size, self.y, block_size, block_size)]
         self.dead = False
-        self.stop = False
+        self.stop = False    
 
     def update(self):
+        for square in self.body:
+            if self.head.x == square.x and self.head.y == square.y:
+                self.dead = True
+
+
+
         self.body.append(self.head)
         for i in range(len(self.body) - 1):
             self.body[i].x, self.body[i].y = self.body[i+1].x, self.body[i+1].y
@@ -45,7 +51,7 @@ def draw_grid():
     for x in range(0, screen_width, block_size):
         for y in range(0, screen_height, block_size):
             rect = pygame.Rect(x, y, block_size, block_size)
-            pygame.draw.rect(screen, "green", rect, 1)
+            pygame.draw.rect(screen, "grey", rect, 1)
 
 snake = Snake()
 apple = Apple()
@@ -76,7 +82,7 @@ while serpentine:
 
     snake.update()
 
-    screen.fill("blue")
+    screen.fill("black")
     draw_grid()
     
     apple.update()
@@ -86,7 +92,12 @@ while serpentine:
 
     #draw snake's body.
     for square in snake.body:
-        pygame.draw.rect(screen, "black", square)
+        pygame.draw.rect(screen, "yellow", square)
+
+    #check if the head of the snake meets the position of the apple
+    if snake.head.x == apple.x and snake.head.y == apple.y:
+            snake.body.append(pygame.Rect(square.x, square.y, block_size, block_size))
+            apple = Apple()
     
     pygame.display.update()
     clock.tick(5)        
