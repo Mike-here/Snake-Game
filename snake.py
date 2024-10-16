@@ -25,9 +25,18 @@ class Snake:
         self.stop = False    
 
     def update(self):
+        global snake
+        global apple
         for square in self.body:
             if self.head.x == square.x and self.head.y == square.y:
                 self.dead = True
+            if self.head.x not in range(0, screen_width) or self.head.y not in range(0, screen_height):
+                self.dead = True
+
+        if self.dead == True:
+            snake = Snake()   
+            apple = Apple()   
+            self.dead = False      
 
 
 
@@ -88,11 +97,11 @@ while serpentine:
     apple.update()
 
     #draw snake's head.
-    pygame.draw.rect(screen, "grey", snake.head)
+    pygame.draw.rect(screen, "green", snake.head)
 
     #draw snake's body.
     for square in snake.body:
-        pygame.draw.rect(screen, "yellow", square)
+        pygame.draw.rect(screen, "green", square)
 
     #check if the head of the snake meets the position of the apple
     if snake.head.x == apple.x and snake.head.y == apple.y:
